@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\bin",
+    "\\Config",
+    "\\Controllers",
+    "\\Data",
+    "\\Dto",
+    "\\Entidades"
+  ],
+  "SelectedNode": "\\Controllers\\UsersController.cs",
+  "PreviewInSolutionExplorer": false
+}
