@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>ApiProdutos</title>
+</head>
+<body style="background-color: rgb(199, 61, 61);">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navegação</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="cadastrarusuario.html">Cadastrar</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="loginusuario.html">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="listarcategorias.html">Categorias</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="listarprodutos.html">Podutos</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <div>
+        <h1>Listar produtos</h1>
+        <div class="form-floating mb-3" style="margin-left: 350px; margin-right: 350px; ">
+            <input type="text" class="form-control" id="descricao" placeholder="descrição">
+            <label for="floatingInput">Descrição</label>
+        </div>
+        <div class="form-floating mb-3" style="margin-left: 350px; margin-right: 350px; ">
+            <input type="number" class="form-control" id="preco" placeholder="preço">
+            <label for="floatingInput">Preço</label>
+        </div>
+        <div class="form-floating mb-3" style="margin-left: 350px; margin-right: 350px; ">
+            <input type="number" class="form-control" id="estoque" placeholder="estoque">
+            <label for="floatingInput">Estoque</label>
+        </div>
+        <div class="form-floating mb-3" style="margin-left: 350px; margin-right: 350px; ">
+            <input type="number" class="form-control" id="categoria" placeholder="categoria">
+            <label for="floatingInput">Categoria</label>
+        </div>
+        <div class="form-floating" style="margin-top: 5%; margin-left: 350px; margin-right: 350px; ">
+            <button onclick="carregar()" class="btn btn-outline-info">Carregar</button>
+        </div>
+        <div class="form-floating" style="margin-top: 5%; margin-left: 350px; margin-right: 350px; ">
+            <button onclick="inserir()" class="btn btn-outline-info">Inserir</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Descrição</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--Preencher via java scrip-->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let token = localStorage.getItem('token') 
+            
+          async function  inserir(){
+            let obj = {
+                descricao: document.getElementById("descricao").value,
+                preco: document.getElementById("preco").value,
+                estoque: document.getElementById("estoque").value,
+                categoriaId: document.getElementById("categoria").value
+            }
+           await fetch('https://localhost:7241/api/Produtoes',
+              {
+                method: "POST",
+                headers:{
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(obj)
+              }
+            )
+            carregar()            
+        }
+        function carregar(){
+            linha = ''
+            console.log(token)
+            tabela = document.getElementsByTagName("tbody")[0]
+            tabela.innerHTML = ''
+            fetch('https://localhost:7241/api/Produtoes',
+              {
+                headers: { 
+                           'Authorization': 'Bearer ' + token,
+                           'Content-Type': 'application/json'
+                          }
+              }
+            )
+            .then(dados => dados.json())
+            .then(resposta => {
+                resposta.forEach(element => {
+                   linha = `<tr><td>${element.id}</td><td>${element.descricao}</td>
+                    <td><a href='./editarProduto.html?id=${element.id}'><div class="text-center"> <button class="btn btn-outline-primary">Editar</button></div></a></td>
+                    <td><a href='./excluirProduto.html?id=${element.id}'><div class="text-center"> <button class="btn btn-outline-black">Excluir</button></div></a></td></tr>` 
+                   tabela.innerHTML += linha
+                });
+            })
+        }
+    </script>
+</body>
+</html>

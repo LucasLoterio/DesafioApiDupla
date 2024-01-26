@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div class="text-center"> <button class="btn btn-outline-primary" onclick="excluir()">Excluir</button></div>
+    
+</body>
+<script>
+    let token = localStorage.getItem('token')
+    const params = new URLSearchParams(window.location.search)
+    let idcategoria = params.get('id')
+    async function excluir()
+    {
+        let aux = idcategoria
+        let obj = 
+        {
+            id: idcategoria
+        }
+        if(aux != 0)
+        {
+            await fetch(`https://localhost:7241/api/Categorias/${idcategoria}`,
+            {
+                method: "DELETE",
+                headers: {'Authorization': 'Bearer ' + token,'Content-Type' : 'application/json'},
+                body: JSON.stringify(obj)
+            })
+        }
+        window.location.href = "./listarcategorias.html"
+    }
+</script>
+</html>

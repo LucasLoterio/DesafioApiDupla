@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div class="row justify-content-center align-items-center text-center">
+        <div class="col-md-4">
+            <label for="desc" class="control-label" >Digite o novo nome do produto</label>
+            <input type="text" class="form-control rounded-pill" id ="desc" placeholder="Digite descrição">
+        </div>
+        </div>
+        <br>
+        <div class="row justify-content-center align-items-center text-center">
+            <div class="col-md-4">
+                <label for="estoque" class="control-label" >Digite o novo estoque do produto</label>
+                <input type="number" class="form-control rounded-pill" id ="estoque" placeholder="Digite estoque">
+            </div>
+            </div>
+            <br>
+        <div class="row justify-content-center align-items-center text-center">
+            <div class="col-md-4">
+                <label for="preco" class="control-label" >Digite o novo estoque do produto</label>
+                <input type="number" class="form-control rounded-pill" id ="preco" placeholder="Digite preço">
+            </div>
+            </div>
+        <br>
+        <div class="row justify-content-center align-items-center text-center">
+            <div class="col-md-4">
+                <label for="categoria" class="control-label" >Digite o novo ID da categoria</label>
+                <input type="number" class="form-control rounded-pill" id ="categoria" placeholder="Digite o ID Categoria">
+            </div>
+            </div>
+        <br>
+        <div class="text-center"> <button class="btn btn-outline-primary" onclick="editar()">Editar</button></div>
+</body>
+<script>
+    let token = localStorage.getItem('token')
+    const params = new URLSearchParams(window.location.search)
+    let idproduto = params.get('id')
+    async function editar()
+    {
+        let descricao = document.getElementById("desc").value
+        let preco = document.getElementById("preco").value
+        let estoque = document.getElementById("estoque").value
+        let categoria = document.getElementById("categoria").value
+        let obj = 
+        {
+            id: idproduto,
+            descricao: descricao,
+            preco:preco,
+            estoque:estoque,
+            categoriaId: categoria
+
+        }
+        console.log(obj)
+        if(descricao != "" && preco !=0 && estoque !=0 && categoria !=0)
+        {
+            await fetch(`https://localhost:7241/api/Produtoes/${idproduto}`,
+            {
+                method: "PUT",
+                headers: {'Authorization': 'Bearer ' + token,'Content-Type' : 'application/json'},
+                body: JSON.stringify(obj)
+            })
+        }
+        window.location.href = "./listarprodutos.html"
+    }
+</script>
+</html>
